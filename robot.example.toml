@@ -7,6 +7,8 @@ ad = "Robi"                  # Robotun adı
 kullanici = "varsayilan"     # Hafızanın ait olduğu kullanıcı kimliği
 
 [beyin]
+# Sesli sohbette hız önemliyse "claude-haiku-5-5" önerilir (çok daha hızlı ve ucuz).
+# "claude-opus-5-5" daha yetenekli ama her yanıtta birkaç saniye daha bekletir.
 model = "claude-opus-5-5"
 # Düşünme derinliği: low | medium | high. Sohbette düşük gecikme için "low" önerilir.
 effort = "low"

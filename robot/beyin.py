@@ -10,6 +10,8 @@ Gecikmeyi azaltmak için:
 from __future__ import annotations
 
 import logging
+import threading
+import time
 from contextlib import contextmanager
 from typing import Iterator, Protocol
 
@@ -42,13 +44,21 @@ class DilModeli(Protocol):
     def ozetle(self, dokum: str) -> str: ...
 
 
+ISITMA_ARALIGI_SN = 240  # Önbellek 5 dk yaşar; boştayken bundan sık ısıtılır
+
+
 class _ClaudeAkis:
-    def __init__(self, stream):
+    def __init__(self, stream, baslangic: float):
         self._stream = stream
+        self._baslangic = baslangic
 
     def metin(self) -> Iterator[str]:
+        ilk = True
         for olay in self._stream:
             if olay.type == "text":
+                if ilk:
+                    ilk = False
+                    log.info("Modelden ilk kelime: %.0f ms", (time.perf_counter() - self._baslangic) * 1000)
                 yield olay.text
 
     def son_mesaj(self):
@@ -62,6 +72,7 @@ class ClaudeModel:
         self.ayar = ayar
         # Ses etkileşiminde uzun bekleme istemeyiz: makul zaman aşımı ve tekrar deneme
         self.istemci = istemci or anthropic.Anthropic(timeout=60.0, max_retries=2)
+        self._son_istek = float("-inf")  # İlk açılışta hemen ısıt
 
     def _ortak(self) -> dict:
         p: dict = {"model": self.ayar.model, "output_config": {"effort": self.ayar.effort}}
@@ -70,25 +81,53 @@ class ClaudeModel:
             p["fallbacks"] = "default"
         return p
 
+    def _api(self, p: dict):
+        return self.istemci.beta.messages if "betas" in p else self.istemci.messages
+
+    @staticmethod
+    def _sistem(system: str) -> list:
+        # Araçlar + sistem istemi sabit önek: açık önbellek noktası (ısıtma ile paylaşılır)
+        return [{"type": "text", "text": system, "cache_control": {"type": "ephemeral"}}]
+
     @contextmanager
     def akis(self, *, system: str, messages: list, tools: list):
         p = self._ortak()
-        api = self.istemci.beta.messages if "betas" in p else self.istemci.messages
-        with api.stream(
+        self._son_istek = time.monotonic()
+        baslangic = time.perf_counter()
+        with self._api(p).stream(
             **p,
             max_tokens=self.ayar.max_tokens,
-            system=[{"type": "text", "text": system}],
+            system=self._sistem(system),
             messages=messages,
             tools=tools,
-            cache_control={"type": "ephemeral"},  # Geçmişi önbelleğe al: daha düşük gecikme/maliyet
+            cache_control={"type": "ephemeral"},  # Geçmişi de önbelleğe al
         ) as stream:
-            yield _ClaudeAkis(stream)
+            yield _ClaudeAkis(stream, baslangic)
+
+    def isit(self, *, system: str, tools: list) -> None:
+        """Bağlantıyı açar ve sabit öneki önbelleğe yazar (max_tokens=0: yanıt üretilmez).
+
+        Böylece ilk soruda bağlantı kurma ve önbellek yazma beklemesi yaşanmaz.
+        """
+        p = self._ortak()
+        self._son_istek = time.monotonic()
+        baslangic = time.perf_counter()
+        self._api(p).create(
+            **p,
+            max_tokens=0,
+            system=self._sistem(system),
+            tools=tools,
+            messages=[{"role": "user", "content": "ısınma"}],
+        )
+        log.info("Isıtma tamam: %.0f ms", (time.perf_counter() - baslangic) * 1000)
+
+    def bosta_sn(self) -> float:
+        return time.monotonic() - self._son_istek
 
     def ozetle(self, dokum: str) -> str:
         p = self._ortak()
         p["output_config"] = {"effort": "low"}
-        api = self.istemci.beta.messages if "betas" in p else self.istemci.messages
-        with api.stream(
+        with self._api(p).stream(
             **p,
             max_tokens=4000,
             system=OZET_ISTEMI,
@@ -121,6 +160,23 @@ class Beyin:
         self._dokum: list[tuple[str, str]] = []
         self._gosterilen: set[int] = set()
         self._aktif = False
+
+    # ------------------------------------------------------------------ ısıtma
+
+    def isitmayi_baslat(self) -> None:
+        """Arka planda bağlantıyı ve önbelleği sıcak tutar (model destekliyorsa)."""
+        if not hasattr(self.model, "isit"):
+            return
+        threading.Thread(target=self._isitma_dongusu, daemon=True, name="isitma").start()
+
+    def _isitma_dongusu(self) -> None:
+        while True:
+            if self.model.bosta_sn() >= ISITMA_ARALIGI_SN:
+                try:
+                    self.model.isit(system=self.sistem, tools=araclar.ARACLAR)
+                except Exception as e:  # Isıtma hatası robotu durdurmamalı
+                    log.warning("Isıtma isteği başarısız: %s", e)
+            time.sleep(15)
 
     # ----------------------------------------------------------- konuşma yaşamı
 

@@ -42,6 +42,7 @@ class Robot:
     def calistir(self) -> None:
         kuyruk = SeslendirmeKuyrugu(self.konusmaci, ilk_ses=lambda: self.govde.durum_degistir(Durum.KONUSUYOR))
         son_etkilesim = time.monotonic()
+        self.beyin.isitmayi_baslat()
         try:
             while True:
                 self.govde.durum_degistir(Durum.DINLIYOR)

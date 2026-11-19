@@ -142,6 +142,8 @@ Konuşmanın bitmesiyle robotun konuşmaya başlaması arasındaki süreyi kısa
 
 - **Akışlı yanıt + cümle cümle seslendirme:** Model ilk cümleyi bitirir bitirmez seslendirme başlar;
   ilk parça uzunsa virgülde daha da erken kesilir. Sonraki cümleler, önceki çalınırken üretilir.
+- **Isıtma:** Açılışta ve boşta kaldıkça bağlantı açılır ve sabit istem önbelleğe yazılır; ilk soru da hızlı yanıtlanır.
+- **Hızlı model seçeneği:** `robot.toml` içinde `model = "claude-haiku-5-5"` en düşük gecikmeyi verir.
 - **İstem önbelleği:** Sistem istemi sabit tutulur, konuşma geçmişi önbelleğe alınır.
 - **Düşük düşünme derinliği:** Sohbette `effort = "low"` varsayılandır (`robot.toml` → `[beyin]`).
 - **Hızlı konuşma sonu algılama:** `sessizlik_ms` (varsayılan 600 ms) ile konuşmanın bittiğine hızlı karar verilir.
