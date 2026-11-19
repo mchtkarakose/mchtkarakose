@@ -25,9 +25,9 @@ ilgili_bilgi_sayisi = 5      # Her mesajda aranacak ilgili bilgi sayısı
 bosta_kalma_dk = 5           # Bu kadar dakika sessizlikte konuşma kapatılır (özetlenir)
 
 [ses]
-# dinleyici: "klavye" (test) | "azure"
+# dinleyici: "klavye" (test) | "ucretsiz" (anahtarsız mikrofon) | "azure"
 dinleyici = "klavye"
-# konusmaci: "konsol" (test) | "azure"
+# konusmaci: "konsol" (test) | "ucretsiz" (anahtarsız doğal ses) | "azure"
 konusmaci = "konsol"
 dil = "tr-TR"
 ses_adi = "tr-TR-EmelNeural"     # veya tr-TR-AhmetNeural

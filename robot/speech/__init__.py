@@ -20,6 +20,10 @@ def olustur(ses_ayar, ayarlar):
         from robot.speech.azure import AzureDinleyici
 
         dinleyici = AzureDinleyici(ses_ayar, ayarlar.azure_anahtar, ayarlar.azure_bolge)
+    elif ses_ayar.dinleyici == "ucretsiz":
+        from robot.speech.ucretsiz import MikrofonDinleyici
+
+        dinleyici = MikrofonDinleyici(ses_ayar)
     else:
         raise ValueError(f"Bilinmeyen dinleyici: {ses_ayar.dinleyici}")
 
@@ -31,6 +35,10 @@ def olustur(ses_ayar, ayarlar):
         from robot.speech.azure import AzureKonusmaci
 
         konusmaci = AzureKonusmaci(ses_ayar, ayarlar.azure_anahtar, ayarlar.azure_bolge)
+    elif ses_ayar.konusmaci == "ucretsiz":
+        from robot.speech.ucretsiz import EdgeKonusmaci
+
+        konusmaci = EdgeKonusmaci(ses_ayar)
     else:
         raise ValueError(f"Bilinmeyen konuşmacı: {ses_ayar.konusmaci}")
     return dinleyici, konusmaci

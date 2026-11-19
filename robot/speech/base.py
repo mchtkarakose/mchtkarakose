@@ -20,9 +20,17 @@ class Dinleyici(ABC):
 
 
 class Konusmaci(ABC):
+    def hazirla(self, metin: str):
+        """Seslendirmeyi önceden hazırlar (ör. sesi arka planda sentezler).
+
+        Cümle kuyruğa girer girmez çağrılır; dönen değer sırası gelince konus()'a verilir.
+        Böylece bir cümle çalarken sonrakinin sesi hazırlanır.
+        """
+        return metin
+
     @abstractmethod
-    def konus(self, metin: str) -> None:
-        """Metni seslendirir; seslendirme bitene kadar bekler."""
+    def konus(self, metin) -> None:
+        """hazirla() çıktısını seslendirir; seslendirme bitene kadar bekler."""
 
     def durdur(self) -> None:
         """Devam eden seslendirmeyi keser (söz kesme / barge-in için)."""
@@ -43,7 +51,7 @@ class SeslendirmeKuyrugu:
 
     def __init__(self, konusmaci: Konusmaci, ilk_ses: Callable[[], None] | None = None):
         self.konusmaci = konusmaci
-        self._kuyruk: queue.Queue[str | None] = queue.Queue()
+        self._kuyruk: queue.Queue = queue.Queue()
         self._ilk_ses = ilk_ses
         self._ilk_bekleniyor = False
         self.ilk_ses_zamani: float | None = None
@@ -55,7 +63,7 @@ class SeslendirmeKuyrugu:
         self.ilk_ses_zamani = None
 
     def ekle(self, cumle: str) -> None:
-        self._kuyruk.put(cumle)
+        self._kuyruk.put(self.konusmaci.hazirla(cumle))
 
     def bekle(self) -> None:
         """Kuyruktaki her şey seslendirilene kadar bekler."""

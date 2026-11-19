@@ -73,7 +73,23 @@ Sen: çıkış
 Bir sonraki çalıştırmada robot Mehmet'i ve Pamuk'u hatırlar; önceki konuşmanın özeti de
 yeni konuşmaya bağlam olarak taşınır.
 
-### 2. Sesli mod
+### 2a. Sesli mod – ücretsiz, anahtarsız (deneme için)
+
+Üyelik veya anahtar gerektirmez. Konuşma tanıma için Google'ın ücretsiz web servisini,
+ses için Microsoft Edge'in Türkçe nöral seslerini kullanır. Resmi API değildir;
+deneme için uygundur, kalıcı ürün için 2b'deki Azure önerilir.
+
+```bash
+pip install -e ".[ucretsiz]"
+```
+
+`robot.toml` içinde `[ses]` bölümünde `dinleyici = "ucretsiz"` ve `konusmaci = "ucretsiz"` yapın, sonra:
+
+```bash
+python -m robot calistir --gecikme
+```
+
+### 2b. Sesli mod – Azure
 
 İlk sürümde konuşma tanıma ve doğal ses için **Azure AI Speech** kullanılır
 (Türkçe nöral sesler: `tr-TR-EmelNeural`, `tr-TR-AhmetNeural`).
