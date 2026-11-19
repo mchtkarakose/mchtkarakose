@@ -247,7 +247,7 @@ class Beyin:
         ilk_tur = not self.mesajlar
         kisisel, ozetler = [], []
         if ilk_tur:
-            kisisel = self.hafiza.bilgileri_listele("kisisel", 30) + self.hafiza.bilgileri_listele("tercih", 30)
+            kisisel = self.hafiza.bilgileri_listele("kisisel", 80) + self.hafiza.bilgileri_listele("tercih", 40)
             ozetler = self.hafiza.son_ozetler(self.ayar.ozet_sayisi, haric=self.konusma_id)
         gosterilen = self._gosterilen | {b.id for b in kisisel}
         ilgili = [

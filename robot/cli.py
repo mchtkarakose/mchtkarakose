@@ -20,6 +20,27 @@ def _hafiza(ayarlar) -> Hafiza:
     return Hafiza(ayarlar.hafiza.veritabani, kullanici=ayarlar.robot.kullanici)
 
 
+def dosyadan_bilgiler(yol: str) -> list[tuple[str, str]]:
+    """Metin dosyasından bilgi okur. Her satır bir bilgidir.
+
+    Satır başına "kisisel:", "tercih:" veya "bilgi:" yazılarak türü belirtilir
+    (yazılmazsa "kisisel" sayılır). # ile başlayan satırlar ve boş satırlar atlanır.
+    """
+    from pathlib import Path
+
+    bilgiler = []
+    for satir in Path(yol).read_text(encoding="utf-8-sig").splitlines():
+        satir = satir.strip().lstrip("-•* ").strip()
+        if not satir or satir.startswith("#"):
+            continue
+        tur, ayrac, kalan = satir.partition(":")
+        if ayrac and tur.strip().lower() in TURLER and kalan.strip():
+            bilgiler.append((tur.strip().lower(), kalan.strip()))
+        else:
+            bilgiler.append(("kisisel", satir))
+    return bilgiler
+
+
 def _robot_kur(ayarlar, metin_modu: bool, gecikme: bool):
     from robot.beyin import Beyin, ClaudeModel
     from robot.speech import olustur
@@ -81,6 +102,17 @@ def _hafiza_komutu(args, ayarlar) -> int:
     elif k == "ekle":
         no = h.bilgi_ekle(" ".join(args.icerik), args.tur, kaynak="elle")
         print(f"Eklendi: #{no}")
+    elif k == "yukle":
+        eklenen = mevcut = 0
+        onceki = {(b.tur, b.icerik) for b in h.bilgileri_listele()}
+        for tur, icerik in dosyadan_bilgiler(args.dosya):
+            if (tur, icerik) in onceki:
+                mevcut += 1
+                continue
+            h.bilgi_ekle(icerik, tur, kaynak="dosya")
+            onceki.add((tur, icerik))
+            eklenen += 1
+        print(f"{eklenen} bilgi eklendi, {mevcut} tanesi zaten vardı.")
     elif k == "duzelt":
         print("Güncellendi." if h.bilgi_guncelle(args.numara, " ".join(args.icerik)) else "Kayıt bulunamadı.")
     elif k == "sil":
@@ -128,6 +160,8 @@ def parser() -> argparse.ArgumentParser:
     s = ha.add_parser("ekle", help="Elle bilgi ekle")
     s.add_argument("icerik", nargs="+")
     s.add_argument("--tur", choices=TURLER, default="bilgi")
+    s = ha.add_parser("yukle", help="Metin dosyasından toplu bilgi yükle (satır başına bir bilgi)")
+    s.add_argument("dosya")
     s = ha.add_parser("duzelt", help="Bir bilgiyi düzelt")
     s.add_argument("numara", type=int)
     s.add_argument("icerik", nargs="+")

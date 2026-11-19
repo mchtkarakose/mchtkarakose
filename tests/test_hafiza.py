@@ -67,3 +67,15 @@ def test_arama_sorgusu_ozel_karakterlere_dayanikli():
     assert _arama_sorgusu('"; DROP TABLE -- ne?') is not None
     assert _arama_sorgusu("ve bu mi") is None
     Hafiza().bilgi_ara('" OR * NEAR(')
+
+
+def test_dosyadan_bilgiler(tmp_path):
+    from robot.cli import dosyadan_bilgiler
+
+    f = tmp_path / "b.txt"
+    f.write_text("\ufeff# yorum\n\nkisisel: Eşi Büşra.\ntercih: Çayı şekersiz sever.\n- Saat: 10:30 gibi gelir.\n", "utf-8")
+    assert dosyadan_bilgiler(f) == [
+        ("kisisel", "Eşi Büşra."),
+        ("tercih", "Çayı şekersiz sever."),
+        ("kisisel", "Saat: 10:30 gibi gelir."),
+    ]
