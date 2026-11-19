@@ -30,6 +30,7 @@ class Robot:
         govde: Govde | None = None,
         bosta_kalma_sn: float = 300,
         gecikme_goster: bool = False,
+        yaziya_dok: bool = False,
     ):
         self.beyin = beyin
         self.dinleyici = dinleyici
@@ -37,6 +38,7 @@ class Robot:
         self.govde = govde or Govde()
         self.bosta_kalma_sn = bosta_kalma_sn
         self.gecikme_goster = gecikme_goster
+        self.yaziya_dok = yaziya_dok  # Sesli modda duyulanı ve söyleneni ekrana da yaz
         self.gecikmeler_ms: list[float] = []
 
     def calistir(self) -> None:
@@ -46,6 +48,8 @@ class Robot:
         try:
             while True:
                 self.govde.durum_degistir(Durum.DINLIYOR)
+                if self.yaziya_dok:
+                    print("[dinliyorum...]", flush=True)
                 try:
                     metin = self.dinleyici.dinle()
                 except EOFError:
@@ -82,8 +86,14 @@ class Robot:
         self.govde.durum_degistir(Durum.DUSUNUYOR)
         baslangic = time.perf_counter()
         kuyruk.yeni_tur()
+        if self.yaziya_dok:
+            print(f"Sen: {metin}", flush=True)
+        soylenen = []
         for cumle in self.beyin.yanitla(metin):
             kuyruk.ekle(cumle)
+            soylenen.append(cumle)
+        if self.yaziya_dok:
+            print(f"Robot: {' '.join(soylenen)}", flush=True)
         kuyruk.bekle()
         if kuyruk.ilk_ses_zamani is not None:
             ms = (kuyruk.ilk_ses_zamani - baslangic) * 1000

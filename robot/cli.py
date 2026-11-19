@@ -36,13 +36,22 @@ def _robot_kur(ayarlar, metin_modu: bool, gecikme: bool):
         konusmaci,
         bosta_kalma_sn=ayarlar.hafiza.bosta_kalma_dk * 60,
         gecikme_goster=gecikme,
+        yaziya_dok=ayarlar.ses.konusmaci != "konsol",
     )
 
 
 def _calistir(args, ayarlar) -> int:
+    if args.komut == "calistir":
+        print(
+            f"Ses ayarı: dinleyici={ayarlar.ses.dinleyici}, konusmaci={ayarlar.ses.konusmaci}\n"
+            "Hazırlanıyor (ortam gürültüsü ölçülüyor, lütfen bir saniye sessiz kalın)...",
+            flush=True,
+        )
     robot = _robot_kur(ayarlar, metin_modu=args.komut == "sohbet", gecikme=args.gecikme)
     if args.komut == "sohbet":
         print(f"{ayarlar.robot.ad} hazır. Çıkmak için 'çıkış' yazın.\n")
+    else:
+        print(f"{ayarlar.robot.ad} hazır. Konuşabilirsiniz; kapatmak için 'görüşürüz' deyin.\n", flush=True)
     try:
         robot.calistir()
     except TypeError as e:
