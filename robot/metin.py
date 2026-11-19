@@ -25,7 +25,7 @@ def konusmaya_uygun(metin: str) -> str:
 class CumleBolucu:
     """Gelen metin parçalarını biriktirip tamamlanan cümleleri döndürür."""
 
-    def __init__(self, ilk_parca_min: int = 30, azami_uzunluk: int = 220):
+    def __init__(self, ilk_parca_min: int = 120, azami_uzunluk: int = 220):
         self._tampon = ""
         self._ilk = True
         self.ilk_parca_min = ilk_parca_min

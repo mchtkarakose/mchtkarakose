@@ -23,7 +23,7 @@ def test_kisaltma_ve_sayilarda_bolmez():
 
 def test_ilk_parca_virgulde_erken_kesilir():
     metin = "Bunu sana memnuniyetle anlatırım, çünkü çok ilginç bir konu, gerçekten."
-    sonuc = _bol([metin])
+    sonuc = _bol([metin], ilk_parca_min=30)
     assert sonuc[0] == "Bunu sana memnuniyetle anlatırım,"
     assert sonuc[1] == "çünkü çok ilginç bir konu, gerçekten."
 
@@ -31,3 +31,7 @@ def test_ilk_parca_virgulde_erken_kesilir():
 def test_markdown_temizlenir():
     assert konusmaya_uygun("**Kalın** ve [bağlantı](http://x) # başlık") == "Kalın ve bağlantı başlık"
     assert _bol(["- birinci\n- ikinci"]) == ["birinci", "ikinci"]
+
+
+def test_varsayilan_virgulde_kesmez():
+    assert _bol(["Merhaba, nasılsın, bugün nasıl gidiyor?"]) == ["Merhaba, nasılsın, bugün nasıl gidiyor?"]

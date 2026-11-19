@@ -32,3 +32,5 @@ konusmaci = "konsol"
 dil = "tr-TR"
 ses_adi = "tr-TR-EmelNeural"     # veya tr-TR-AhmetNeural
 sessizlik_ms = 600               # Konuşmanın bittiğine karar vermek için sessizlik süresi
+mikrofon_hassasiyeti = 1.0       # Robot zor duyuyorsa artırın (ör. 2.0), gürültüyü konuşma sanıyorsa azaltın
+konusma_hizi = "+0%"             # Ücretsiz seste konuşma hızı (ör. "+10%" daha hızlı)

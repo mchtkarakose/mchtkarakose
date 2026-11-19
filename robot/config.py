@@ -43,6 +43,8 @@ class SesAyar:
     dil: str = "tr-TR"
     ses_adi: str = "tr-TR-EmelNeural"
     sessizlik_ms: int = 600
+    mikrofon_hassasiyeti: float = 1.0
+    konusma_hizi: str = "+0%"
 
 
 @dataclass
