@@ -1,4 +1,3 @@
-/* STM32F103C6 icin minimal baslangic kodu ve kesme vektor tablosu */
 #include <stdint.h>
 
 extern uint32_t _sidata, _sdata, _edata, _sbss, _ebss, _estack;
@@ -33,21 +32,21 @@ void (* const vektor_tablosu[])(void) = {
     0,
     PendSV_Handler,
     SysTick_Handler,
-    /* Harici kesmeler (IRQ0..IRQ6) */
-    Default_Handler,   /* 0 WWDG   */
-    Default_Handler,   /* 1 PVD    */
-    Default_Handler,   /* 2 TAMPER */
-    Default_Handler,   /* 3 RTC    */
-    Default_Handler,   /* 4 FLASH  */
-    Default_Handler,   /* 5 RCC    */
-    EXTI0_IRQHandler,  /* 6 EXTI0  */
+
+    Default_Handler,
+    Default_Handler,
+    Default_Handler,
+    Default_Handler,
+    Default_Handler,
+    Default_Handler,
+    EXTI0_IRQHandler,
 };
 
 void Reset_Handler(void)
 {
     uint32_t *src = &_sidata, *dst = &_sdata;
-    while (dst < &_edata) *dst++ = *src++;      /* .data kopyala */
-    for (dst = &_sbss; dst < &_ebss; ) *dst++ = 0; /* .bss sifirla */
+    while (dst < &_edata) *dst++ = *src++;
+    for (dst = &_sbss; dst < &_ebss; ) *dst++ = 0;
     main();
     for (;;) { }
 }

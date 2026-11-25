@@ -1,4 +1,3 @@
-/* STM32F103C6: 32 KB Flash, 10 KB RAM */
 ENTRY(Reset_Handler)
 
 MEMORY

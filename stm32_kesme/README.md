@@ -15,7 +15,7 @@ yakıp söndürme işini ana döngü yapar. Böylece kesme kısa sürer ve progr
 | Dosya | Açıklama |
 |---|---|
 | `kesme.hex` | **Proteus'a doğrudan yüklenecek hazır dosya** |
-| `main.c` | Program (register seviyesinde, HAL gerekmez) |
+| `main.c` | Program kodu |
 | `startup.c` | Vektör tablosu ve başlangıç kodu |
 | `stm32f103c6.ld` | Bellek haritası (linker script) |
 | `Makefile` | `make` ile yeniden derleme (arm-none-eabi-gcc) |
