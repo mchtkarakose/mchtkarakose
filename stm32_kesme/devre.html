@@ -1,0 +1,109 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>
+body{margin:0;background:#fff;font-family:Arial,Helvetica,sans-serif}
+text{font-size:15px;fill:#111}
+.t{font-size:13px}
+.b{font-weight:bold}
+.w{stroke:#1d4ed8;stroke-width:2.5;fill:none}
+.g{stroke:#111;stroke-width:2;fill:none}
+.chip{fill:#fef3c7;stroke:#111;stroke-width:2}
+.lcd{fill:#dcfce7;stroke:#111;stroke-width:2}
+.dot{fill:#1d4ed8}
+</style></head><body>
+<svg width="1100" height="640" viewBox="0 0 1100 640" xmlns="http://www.w3.org/2000/svg">
+<text x="20" y="32" class="b" style="font-size:20px">STM32F103C6 Kesme Devresi (Proteus)</text>
+
+<!-- STM32 -->
+<rect x="420" y="90" width="200" height="420" class="chip"/>
+<text x="455" y="470" class="b" style="font-size:18px">STM32F103C6</text>
+<!-- left pins -->
+<text x="430" y="155" class="b">PA0</text><line x1="400" y1="150" x2="420" y2="150" class="g"/>
+<text x="430" y="275" class="b">PA1</text><line x1="400" y1="270" x2="420" y2="270" class="g"/>
+<text x="430" y="395" class="b">PA2</text><line x1="400" y1="390" x2="420" y2="390" class="g"/>
+<!-- right pins -->
+<g>
+<text x="560" y="135" class="b">PB10</text><line x1="620" y1="130" x2="640" y2="130" class="g"/>
+<text x="560" y="175" class="b">PB11</text><line x1="620" y1="170" x2="640" y2="170" class="g"/>
+<text x="560" y="215" class="b">PB12</text><line x1="620" y1="210" x2="640" y2="210" class="g"/>
+<text x="560" y="255" class="b">PB13</text><line x1="620" y1="250" x2="640" y2="250" class="g"/>
+<text x="560" y="295" class="b">PB14</text><line x1="620" y1="290" x2="640" y2="290" class="g"/>
+<text x="560" y="335" class="b">PB15</text><line x1="620" y1="330" x2="640" y2="330" class="g"/>
+</g>
+
+<!-- PA0 button + pullup -->
+<line x1="400" y1="150" x2="250" y2="150" class="w"/>
+<circle cx="250" cy="150" r="4" class="dot"/>
+<!-- pullup up -->
+<line x1="250" y1="150" x2="250" y2="125" class="w"/>
+<rect x="240" y="85" width="20" height="40" fill="#fff" stroke="#111" stroke-width="2"/>
+<text x="268" y="110" class="t">R1 10k</text>
+<line x1="250" y1="85" x2="250" y2="65" class="w"/>
+<polygon points="235,65 265,65 250,50" fill="#dc2626"/>
+<text x="272" y="62" class="t">POWER (+3.3V)</text>
+<!-- button left -->
+<line x1="250" y1="150" x2="190" y2="150" class="w"/>
+<line x1="190" y1="150" x2="190" y2="170" class="w"/>
+<circle cx="190" cy="175" r="4" fill="#fff" stroke="#111" stroke-width="2"/>
+<line x1="180" y1="168" x2="205" y2="198" class="g"/>
+<line x1="197" y1="182" x2="212" y2="175" class="g"/>
+<circle cx="190" cy="205" r="4" fill="#fff" stroke="#111" stroke-width="2"/>
+<text x="215" y="195" class="t">BUTTON</text>
+<line x1="190" y1="209" x2="190" y2="230" class="w"/>
+<line x1="175" y1="230" x2="205" y2="230" class="g"/><line x1="180" y1="236" x2="200" y2="236" class="g"/><line x1="186" y1="242" x2="194" y2="242" class="g"/>
+<text x="215" y="242" class="t">GROUND</text>
+
+<!-- PA1 green -->
+<line x1="400" y1="270" x2="340" y2="270" class="w"/>
+<rect x="300" y="260" width="40" height="20" fill="#fff" stroke="#111" stroke-width="2"/>
+<text x="296" y="252" class="t">R2 100Ω</text>
+<line x1="300" y1="270" x2="250" y2="270" class="w"/>
+<polygon points="250,258 250,282 225,270" fill="#22c55e" stroke="#111" stroke-width="2"/>
+<line x1="225" y1="258" x2="225" y2="282" class="g"/>
+<text x="205" y="300" class="t">LED-GREEN</text>
+<line x1="225" y1="270" x2="170" y2="270" class="w"/>
+<line x1="170" y1="270" x2="170" y2="300" class="w"/>
+<line x1="155" y1="300" x2="185" y2="300" class="g"/><line x1="160" y1="306" x2="180" y2="306" class="g"/><line x1="166" y1="312" x2="174" y2="312" class="g"/>
+
+<!-- PA2 red -->
+<line x1="400" y1="390" x2="340" y2="390" class="w"/>
+<rect x="300" y="380" width="40" height="20" fill="#fff" stroke="#111" stroke-width="2"/>
+<text x="296" y="372" class="t">R3 100Ω</text>
+<line x1="300" y1="390" x2="250" y2="390" class="w"/>
+<polygon points="250,378 250,402 225,390" fill="#ef4444" stroke="#111" stroke-width="2"/>
+<line x1="225" y1="378" x2="225" y2="402" class="g"/>
+<text x="210" y="420" class="t">LED-RED</text>
+<line x1="225" y1="390" x2="170" y2="390" class="w"/>
+<line x1="170" y1="390" x2="170" y2="420" class="w"/>
+<line x1="155" y1="420" x2="185" y2="420" class="g"/><line x1="160" y1="426" x2="180" y2="426" class="g"/><line x1="166" y1="432" x2="174" y2="432" class="g"/>
+
+<text x="30" y="480" class="t">LED yönü: üçgenin düz tarafı (anot) direnç tarafına,</text>
+<text x="30" y="498" class="t">çizgili tarafı (katot) GROUND'a.</text>
+
+<!-- LCD -->
+<rect x="820" y="90" width="250" height="420" class="lcd"/>
+<text x="880" y="80" class="b" style="font-size:17px">LCD  LM016L</text>
+<g>
+<text x="832" y="135" class="b">RS (4)</text>
+<text x="832" y="175" class="b">E (6)</text>
+<text x="832" y="215" class="b">D4 (11)</text>
+<text x="832" y="255" class="b">D5 (12)</text>
+<text x="832" y="295" class="b">D6 (13)</text>
+<text x="832" y="335" class="b">D7 (14)</text>
+<line x1="640" y1="130" x2="820" y2="130" class="w"/>
+<line x1="640" y1="170" x2="820" y2="170" class="w"/>
+<line x1="640" y1="210" x2="820" y2="210" class="w"/>
+<line x1="640" y1="250" x2="820" y2="250" class="w"/>
+<line x1="640" y1="290" x2="820" y2="290" class="w"/>
+<line x1="640" y1="330" x2="820" y2="330" class="w"/>
+</g>
+<text x="832" y="385" class="b">RW (5)  → GROUND</text>
+<text x="832" y="415" class="b">VSS (1) → GROUND</text>
+<text x="832" y="445" class="b">VEE (3) → GROUND</text>
+<text x="832" y="475" class="b">VDD (2) → POWER</text>
+<text x="832" y="500" class="t">D0–D3 (7–10) boş kalır</text>
+
+<rect x="20" y="545" width="1060" height="80" fill="#eff6ff" stroke="#93c5fd"/>
+<text x="35" y="572" class="t">Program File: kesme.hex  •  Crystal Frequency: 8MHz  •  Design → Configure Power Rails: VDD/VDDA = 3.3V, VSS/VSSA = GND</text>
+<text x="35" y="600" class="t">Mavi çizgiler kablodur. İstersen kablo yerine iki uca aynı isimli etiket (Wire Label, kısayol L) koyabilirsin.</text>
+</svg>
+</body></html>

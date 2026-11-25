@@ -14,8 +14,8 @@
  *
  * Baglantilar:
  *   PA0  <- Buton (diger ucu GND), 10k pull-up -> 3.3V
- *   PA1  -> 220R -> Yesil LED -> GND   (calisiyor)
- *   PA2  -> 220R -> Kirmizi LED -> GND (hata)
+ *   PA1  -> 100R -> Yesil LED -> GND   (calisiyor)
+ *   PA2  -> 100R -> Kirmizi LED -> GND (hata)
  *   LCD 16x2 (LM016L), 4-bit mod, RW = GND
  *   PB10 -> RS, PB11 -> E, PB12..PB15 -> D4..D7
  *

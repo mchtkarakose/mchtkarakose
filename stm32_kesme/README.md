@@ -27,8 +27,8 @@ Kullanılan parçalar (Pick Devices): `STM32F103C6`, `LM016L`, `BUTTON`, `RES`, 
 | STM32 pini | Bağlantı |
 |---|---|
 | **PA0** | BUTTON → GND, ayrıca 10k direnç → 3.3V (pull-up) |
-| **PA1** | 220Ω → LED-GREEN → GND (sistem çalışıyor) |
-| **PA2** | 220Ω → LED-RED → GND (hata / kesme) |
+| **PA1** | 100Ω → LED-GREEN → GND (sistem çalışıyor) |
+| **PA2** | 100Ω → LED-RED → GND (hata / kesme) |
 | **PB10** | LCD RS |
 | **PB11** | LCD E |
 | **PB12** | LCD D4 |
@@ -44,8 +44,8 @@ D0–D3 boş kalır.
           |
          [10k]
           |
-PA0 ------+------[BUTTON]---- GND        PA1 --[220R]-->|-- GND  (yeşil)
-                                         PA2 --[220R]-->|-- GND  (kırmızı)
+PA0 ------+------[BUTTON]---- GND        PA1 --[100R]-->|-- GND  (yeşil)
+                                         PA2 --[100R]-->|-- GND  (kırmızı)
 PB10 -> RS   PB11 -> E
 PB12 -> D4   PB13 -> D5   PB14 -> D6   PB15 -> D7     (LCD 16x2)
 ```
